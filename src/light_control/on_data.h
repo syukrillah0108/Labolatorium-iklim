@@ -24,12 +24,7 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
  
-void setup() {
-  // Init Serial Monitor
-  Serial.begin(115200);
-  pinMode(A0, INPUT);
- 
-  // Set device as a Wi-Fi Station
+void setup_espnow() {
   WiFi.mode(WIFI_STA);
 
   // Init ESP-NOW
@@ -54,8 +49,8 @@ void setup() {
   }
 }
  
-void loop() {
-    myData.LED2 = analogRead(A0);
+void sendData(int x) {
+    myData.LED2 = x;
   
   // Send message via ESP-NOW
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
@@ -66,5 +61,5 @@ void loop() {
   else {
     Serial.println("Error sending the data");
   }
-  delay(2000);
+  delay(100);
 }
